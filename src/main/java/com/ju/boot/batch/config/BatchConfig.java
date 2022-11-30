@@ -1,5 +1,6 @@
 package com.ju.boot.batch.config;
 
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
@@ -29,4 +30,13 @@ public class BatchConfig {
 		return reader;
 		
 	}
+	
+	@Bean
+	public ItemProcessor<Product,Product> processor(){
+		return (p)->{
+			p.setPrice(p.getPrice()-p.getPrice()*10/100);
+			return p;
+		};
+	}
+	
 }
