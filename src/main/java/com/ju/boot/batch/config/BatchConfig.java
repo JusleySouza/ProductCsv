@@ -55,6 +55,7 @@ public class BatchConfig {
 		fieldSetMapper.setTargetType(Product.class);
 		lineMapper.setLineTokenizer(lineTokenizer);
 		lineMapper.setFieldSetMapper(fieldSetMapper);
+		reader.setLineMapper(lineMapper);
 		return reader;
 		
 	}
@@ -79,7 +80,7 @@ public class BatchConfig {
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/mydb");
 		dataSource.setUsername("root");
 		dataSource.setPassword("1234");
