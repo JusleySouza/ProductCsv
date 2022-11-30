@@ -2,9 +2,11 @@ package com.ju.boot.batch.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -30,6 +32,11 @@ public class BatchConfig {
 	
 	@Autowired
 	private StepBuilderFactory sbf;
+	
+	@Bean
+	public Job job() {
+		return jbf.get("j2").incrementer(new RunIdIncrementer()).start(step()).build();
+	}
 	
 	@Bean
 	public Step step() {
