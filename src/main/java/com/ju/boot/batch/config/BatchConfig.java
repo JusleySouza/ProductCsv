@@ -2,6 +2,9 @@ package com.ju.boot.batch.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -11,6 +14,7 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +24,17 @@ import com.ju.boot.batch.model.Product;
 
 @Configuration
 public class BatchConfig {
+	
+	@Autowired
+	private JobBuilderFactory jbf;
+	
+	@Autowired
+	private StepBuilderFactory sbf;
+	
+	@Bean
+	public Step step() {
+		return sbf.get("s1").<Product,Product>chunk(3).reader(reader()).processor(processor()).writer(writer()).build();
+	}
 
 	@Bean
 	public ItemReader<Product> reader(){
